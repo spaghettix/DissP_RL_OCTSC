@@ -49,15 +49,6 @@ def dtw(a, b, window):
                     C[i, j] = abs(a[i-1] - b[j-1])  + min(C[i, j - 1], C[i - 1, j - 1], C[i - 1, j])
 
     return C[length_a, length_b]
-#    gap = abs(length_a - length_b)
-#    if gap <= window:
-#        return C[length_a, length_b]
-#    else:
-#        if length_a > length_b:
-#            length_a -= abs(gap-window)
-#        else:
-#            length_b -= abs(gap-window)
-#        return C[length_a, length_b]
 
 
 
@@ -251,7 +242,7 @@ class dissimilarity(object):
 
 if __name__ == '__main__':
 
-    import matplotlib.pyplot as plt
+
     np.random.seed(123)
     D = dissimilarity()
     tslength = 10
@@ -263,27 +254,7 @@ if __name__ == '__main__':
     print(D.CID(a, b))
 
 
-#    print(D.cityblock(a, b))
-#    print('Window = 0: ', D.DTW(a,b, window=0))
-#    print('Manhattan dist: ', ssd.cityblock(a, b))
-#
-#    dist = []
-#    for w in range(0, 50):
-#        dist.append(D.DTW(a,b, window=w))
-#
-#    plt.plot(dist, '-k')
-#    plt.title('DTW distance per window size')
-#    plt.xlabel('Window size')
-#    plt.ylabel('Distance')
-#    plt.show()
-#    plt.close()
-
-
 
 # =============================================================================
 # END
 # =============================================================================
-
-
-
-
