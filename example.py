@@ -23,10 +23,10 @@ __email__ = 'mauceri.stefano@gmail.com'
 import os
 import numpy as np
 import tensorflow as tf
-from nn_utils import AEBase
+from src.nn_utils import AEBase
 import matplotlib.pyplot as plt
 from src.DistPCAE import DistPCAE
-from dissimilarity import dissimilarity
+from src.dissimilarity import dissimilarity
 from scipy.spatial.distance import cdist
 from sklearn.metrics import roc_curve, auc
 from sklearn.neighbors import NearestNeighbors
