@@ -20,7 +20,10 @@ __email__ = 'mauceri.stefano@gmail.com'
 import numpy as np
 import tensorflow as tf
 tf.keras.backend.set_floatx('float32')
-from nn_utils import AEBase, LossHistory
+try:
+    from .nn_utils import AEBase, LossHistory
+except:
+    from nn_utils import AEBase, LossHistory
 from tensorflow.keras import Model, Sequential
 from tensorflow.keras.callbacks import ReduceLROnPlateau
 from tensorflow.keras.layers import (Conv1D,
