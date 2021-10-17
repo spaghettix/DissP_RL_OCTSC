@@ -89,9 +89,7 @@ class AEBase(object):
 
 
     def get_filters(self):
-        _filters = [32, 64, 96]
-        base = np.array_split([1] * self.n_layers, 3)
-        return np.concatenate([i*f for i,f in zip(base, _filters)])
+        return np.array([16] * self.n_layers)
 
 
 
