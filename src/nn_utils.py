@@ -19,6 +19,7 @@ __email__ = 'mauceri.stefano@gmail.com'
 
 import numpy as np
 import pandas as pd
+from tensorflow import expand_dims
 from tensorflow.keras.callbacks import Callback
 
 
@@ -67,7 +68,16 @@ class AEBase(object):
 
 
     def encode_decode(self, X):
-        return self.decoder(self.encoder(X))
+        X = self.decoder(self.encoder(X))
+        if len(X.shape) == 3:
+            return np.squeeze(X, axis=-1)
+        else:
+            return X
+
+
+
+    def load_existing_weigths(self, weights_path):
+        self.model.load_weights(weights_path)
 
 
 
@@ -80,7 +90,7 @@ class AEBase(object):
 
 
     def get_pooling(self):
-        pooling = np.zeros((self.n_layers,))
+        pooling = [0] * self.n_layers
         ix = self.n_layers // 2
         pooling[0] = 1
         pooling[ix] = 1
@@ -89,21 +99,37 @@ class AEBase(object):
 
 
     def get_filters(self):
-        return np.array([16] * self.n_layers)
+        return [self.n_filters] * self.n_layers
+
+
+
+    def get_kernels(self):
+        if type(self.kernel_size) is int:
+            return [self.kernel_size] * self.n_layers
+        else:
+            input_size = self.input_size
+            kernels = []
+            for i in range(self.n_layers):
+                k = np.floor(self.kernel_size * input_size)
+                if k < 3:
+                    k = 3
+                kernels.append(int(k))
+                if self.pooling[i] == 1:
+                    input_size /= 2
+            return kernels
 
 
 
     def check_input_conv(self, X):
         tsl = X.shape[1]
-        if tsl % 4 == 0:
-            return X
+        r = tsl % 4
+        if r == 0:
+            return expand_dims(X, axis=2)
         else:
-            for i in [1, -1, 2, -2]:
-                if (tsl + i) % 4 == 0:
-                    return X[:, :-abs(i)]
+            return expand_dims(X[:, :-r], axis=2)
 
 
 
 # =============================================================================
-# END
+# THE END
 # =============================================================================

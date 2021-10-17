@@ -3,6 +3,7 @@
 
 """
 ABOUT: DENSE VARIATIONAL AUTO-ENCODER
+       for UNIVARIATE TIME SERIES.
 """
 
 
@@ -101,7 +102,7 @@ class VAE(AEBase):
 
     def build_encoder(self):
 
-        model = Sequential(name=f'Encoder')
+        model = Sequential(name='Encoder')
 
         for i, d in enumerate(self.structure[1:], start=1):
 
@@ -298,7 +299,5 @@ if __name__ == '__main__':
 
 
 # =============================================================================
-# END
+# THE END
 # =============================================================================
-
-

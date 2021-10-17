@@ -2,7 +2,7 @@
 
 
 """
-ABOUT: CONVOLUTIONAL AUTO-ENCODER
+ABOUT: CONVOLUTIONAL AUTO-ENCODER for UNIVARIATE TIME SERIES.
 """
 
 
@@ -29,9 +29,10 @@ from tensorflow.keras.callbacks import ReduceLROnPlateau
 
 from tensorflow.keras.layers import (Conv1D,
                                      Dense,
+                                     Flatten,
                                      Input,
-                                     Lambda,
                                      MaxPooling1D,
+                                     Reshape,
                                      UpSampling1D)
 
 
@@ -49,8 +50,9 @@ class CAE(AEBase):
     def __init__(self,
                  input_size,
                  n_layers,
-                 kernel_size=5,
-                 latent_dim=None,
+                 latent_dim,
+                 n_filters=16,
+                 kernel_size=0.03,
                  activation='tanh',
                  optimizer='Adam',
                  lr=0.001,
@@ -58,15 +60,16 @@ class CAE(AEBase):
                  **kwargs):
 
         self.input_size = int(input_size)
-        self.n_layers = n_layers
-
-        if latent_dim is None:
-            latent_dim = tf.math.ceil(tf.math.sqrt(tf.convert_to_tensor(input_size, dtype='float32')))
+        self.n_layers = int(n_layers)
         self.latent_dim = int(latent_dim)
+
+        self.n_filters = int(n_filters)
+        self.kernel_size = kernel_size
 
         self.pooling = self.get_pooling()
         self.filters = self.get_filters()
-        self.kernels = np.zeros_like(self.filters) + kernel_size
+        self.kernels = self.get_kernels()
+
         self.seed = seed
 
         self.activation = tf.keras.activations.get(activation)
@@ -137,7 +140,7 @@ class CAE(AEBase):
 
         self.flat_dim = int(np.floor(self.input_size / (sum(self.pooling)*2)))
 
-        model.add(Lambda(lambda x:tf.squeeze(x, axis=-1)))
+        model.add(Flatten(data_format='channels_last'))
 
         model.add(Dense(self.latent_dim,
                         activation=None,
@@ -163,7 +166,7 @@ class CAE(AEBase):
                         bias_initializer='zeros',
                         name='layer_1.dense.out'))
 
-        model.add(Lambda(lambda x:tf.expand_dims(x, axis=-1)))
+        model.add(Reshape((self.flat_dim,1)))
 
         pooling = np.flip(self.pooling)
         filters = np.flip(self.filters)
@@ -269,12 +272,11 @@ if __name__ == '__main__':
 
     # MODEL
     model = CAE(input_size=X_train_pos.shape[1],
-                n_layers=4,
+                n_layers=1,
                 latent_dim=2,
                 optimizer='Adam',
                 activation='tanh',
                 lr=0.001)
-
 
     print('Training Samples: ', X_train_pos.shape[0])
 
@@ -329,7 +331,7 @@ if __name__ == '__main__':
     X_original = X_train_pos[1].numpy().reshape(1,-1,1)
     X_reconstructed = model.encode_decode(X_original)
     plt.plot(X_original.ravel(), '-k')
-    plt.plot(X_reconstructed.numpy().ravel(), '-b')
+    plt.plot(X_reconstructed.ravel(), '-b')
     plt.title('Reconstruction (black=original - blue=reconstred)')
     plt.show()
     plt.close()
@@ -337,5 +339,5 @@ if __name__ == '__main__':
 
 
 # =============================================================================
-# END
+# THE END
 # =============================================================================

@@ -2,7 +2,7 @@
 
 
 """
-ABOUT: DENSE DISTANCE PRESERVING AUTO-ENCODER
+ABOUT: DENSE DISTANCE PRESERVING AUTO-ENCODER for UNIVARIATE TIME SERIES.
 """
 
 
@@ -305,5 +305,5 @@ if __name__ == '__main__':
 
 
 # =============================================================================
-# END
+# THE END
 # =============================================================================

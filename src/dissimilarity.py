@@ -1,6 +1,12 @@
 
 
 
+"""
+ABOUT: Some time series dissimilarity measures.
+"""
+
+
+
 __author__ = 'Stefano Mauceri'
 
 __email__ = 'mauceri.stefano@gmail.com'
@@ -256,5 +262,5 @@ if __name__ == '__main__':
 
 
 # =============================================================================
-# END
+# THE END
 # =============================================================================
