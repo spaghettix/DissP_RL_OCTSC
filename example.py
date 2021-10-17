@@ -66,13 +66,9 @@ X_test_neg = X_test[(Y_test != class_)]
 
 D = dissimilarity()
 D = getattr(D, diss)
-DM = cdist(X_train_pos, X_train_pos, metric=D)
+_X = tf.squeeze(X_train_pos, axis=-1)
+DM = cdist(_X, _X, metric=D)
 DM = tf.linalg.normalize(DM, ord='euclidean')[0]
-
-X_train_pos = tf.expand_dims(X_train_pos, axis=2)
-X_train_neg = tf.expand_dims(X_train_neg, axis=2)
-X_test_pos = tf.expand_dims(X_test_pos, axis=2)
-X_test_neg = tf.expand_dims(X_test_neg, axis=2)
 
 
 # MODEL
@@ -141,7 +137,7 @@ plt.close()
 X_original = X_train_pos[1].numpy().reshape(1,-1,1)
 X_reconstructed = model.encode_decode(X_original)
 plt.plot(X_original.ravel(), '-k')
-plt.plot(X_reconstructed.numpy().ravel(), '-b')
+plt.plot(X_reconstructed.ravel(), '-b')
 plt.title('Reconstruction (black=original - blue=reconstred)')
 plt.show()
 plt.close()
@@ -171,5 +167,5 @@ print('AUROC:', round(AUROC, 1))
 
 
 # =============================================================================
-# END
+# THE END
 # =============================================================================
