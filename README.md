@@ -12,4 +12,4 @@ Please refer to the file **example.py** and the paper for further information. G
 
 **References:**
 
-<a id="1">[1]</a> Mauceri, Stefano, et al. "Dissimilarity-Preserving Representation Learning for One-Class Time Series Classification." IEEE Transactions on Neural Networks and Learning Systems (2023).
+<a id="1">[1]</a> Mauceri, Stefano, James Sweeney, Miguel Nicolau, and James McDermott. "Dissimilarity-Preserving Representation Learning for One-Class Time Series Classification." IEEE Transactions on Neural Networks and Learning Systems (2023).
